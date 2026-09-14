@@ -2,6 +2,7 @@
   "name": "Smart KKQ · Laporan",
   "short_name": "KKQ Laporan",
   "description": "Jana laporan perjumpaan Kelab KKQ dengan AI dan simpan terus ke Google Sheet.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
