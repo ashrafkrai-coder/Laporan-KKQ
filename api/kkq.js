@@ -8,6 +8,17 @@ function json(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
+function htmlError(text, status) {
+  const message = text.match(/class="errorMessage"[^>]*>([\s\S]*?)<\/div>/i);
+  const clean = message
+    ? message[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+    : '';
+  return {
+    ok: false,
+    error: clean || `Respons Apps Script bukan JSON yang sah (HTTP ${status}).`
+  };
+}
+
 async function callAppsScript(endpoint, payload) {
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -56,10 +67,7 @@ module.exports = async function handler(req, res) {
     }
 
     const response = result.response;
-    const body = result.body || {
-      ok: false,
-      error: `Respons Apps Script bukan JSON yang sah (HTTP ${response.status}). URL deployment mungkin memerlukan akses "Anyone".`
-    };
+    const body = result.body || htmlError(result.text, response.status);
     if (!response.ok) {
       json(res, response.status, body);
       return;

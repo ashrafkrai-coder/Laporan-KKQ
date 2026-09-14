@@ -133,7 +133,11 @@ function saveReport(form, report) {
     D60: report.refleksi
   };
   Object.keys(values).forEach(function(cell) {
-    sheet.getRange(cell).setValue(values[cell] || '');
+    sheet.getRange(cell).setDataValidation(null);
+  });
+  Object.keys(values).forEach(function(cell) {
+    const value = values[cell];
+    sheet.getRange(cell).setValue(value === null || value === undefined ? '' : value);
   });
   return {message: 'Laporan disimpan ke ' + form.targetSheet + '.'};
 }
