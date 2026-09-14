@@ -1,8 +1,7 @@
 const CACHE='smart-kkq-laporan-v3';
 const ASSETS=['/','/index.html','/styles.css','/app.js','/manifest.json',
   '/favicon.png','/apple-touch-icon.png',
-  '/icons/icon-192.png','/icons/icon-512.png',
-  '/icons/icon-maskable-192.png','/icons/icon-maskable-512.png'];
+  '/icons/launchericon-192x192.png','/icons/launchericon-512x512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(async c=>{
   await Promise.all(ASSETS.map(async asset=>{
     try { await c.add(asset); } catch (error) { console.warn('Aset cache gagal:', asset, error); }
