@@ -1,8 +1,10 @@
 const VERIFIED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfaj-k6MD3CZwJnX2tfvAmtu_tU0jCgZKEhXCX9njC7K2XKniH6HhPtfWW96PdXaHE/exec';
-const DEFAULT_APPS_SCRIPT_URL = (process.env.SMART_KKQ_APPS_SCRIPT_URL || VERIFIED_APPS_SCRIPT_URL).trim();
+const DEFAULT_APPS_SCRIPT_URL = VERIFIED_APPS_SCRIPT_URL;
 
 function json(res, status, body) {
-  res.status(status).setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.status(status)
+    .setHeader('Content-Type', 'application/json; charset=utf-8')
+    .setHeader('Cache-Control', 'no-store');
   res.end(JSON.stringify(body));
 }
 
