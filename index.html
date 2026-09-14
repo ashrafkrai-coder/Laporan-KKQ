@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta name="description" content="Smart KKQ - Jana laporan perjumpaan Kelab KKQ tanpa membuka Google Sheet." />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KKQ Laporan" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title>Smart KKQ · Laporan</title>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">SMART KKQ</p>
+        <h1>Jana Laporan Perjumpaan</h1>
+        <p class="sub">Isi maklumat, jana dengan AI, semak dan simpan terus ke Google Sheet.</p>
+      </div>
+      <span id="statusPill" class="status">Sedia</span>
+    </header>
+
+    <section class="card">
+      <h2>1. Maklumat perjumpaan</h2>
+      <div class="grid two">
+        <label>Tab laporan
+          <select id="targetSheet" required></select>
+        </label>
+        <label>Unit / Kelab
+          <input id="unit" autocomplete="off" />
+        </label>
+        <label>Sesi
+          <select id="sesi">
+            <option>PAGI</option>
+            <option>PETANG</option>
+          </select>
+        </label>
+        <label>Perjumpaan
+          <input id="meeting" placeholder="Contoh: PERJUMPAAN 1" />
+        </label>
+        <label>Tarikh
+          <input id="date" type="date" required />
+        </label>
+        <label>Tempat
+          <input id="place" placeholder="Contoh: Surau / Bilik KKQ" />
+        </label>
+        <label>Masa
+          <input id="time" placeholder="Contoh: 2.30 - 4.00 petang" />
+        </label>
+        <label>Kehadiran murid
+          <input id="studentAttendance" placeholder="Contoh: 28 / 30" />
+        </label>
+        <label>Kehadiran guru
+          <input id="teacherAttendance" placeholder="Contoh: 2 / 2" />
+        </label>
+        <label>Guru 1
+          <input id="teacherOne" />
+        </label>
+        <label>Guru 2
+          <input id="teacherTwo" />
+        </label>
+      </div>
+      <label class="full">Tajuk aktiviti
+        <textarea id="title" rows="3" placeholder="Contoh: Latihan Tajwid - Hukum Nun Sakinah dan Tanwin" required></textarea>
+      </label>
+      <div class="actions">
+        <button id="loadDefaultsBtn" class="btn ghost" type="button">Muat data tab</button>
+        <button id="generateBtn" class="btn primary" type="button">Jana Laporan AI</button>
+      </div>
+    </section>
+
+    <section id="previewCard" class="card hidden">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">PREVIEW</p>
+          <h2>2. Semak laporan</h2>
+        </div>
+        <button id="editToggleBtn" class="btn ghost small" type="button">Edit kandungan</button>
+      </div>
+
+      <div id="preview"></div>
+      <div id="editor" class="hidden"></div>
+
+      <div class="actions sticky-actions">
+        <button id="regenerateBtn" class="btn ghost" type="button">Jana semula</button>
+        <button id="saveBtn" class="btn primary" type="button">Simpan ke Google Sheet</button>
+      </div>
+    </section>
+
+    <section id="resultCard" class="card success hidden">
+      <h2>Berjaya</h2>
+      <p id="resultMessage"></p>
+      <p id="resultDriveLink" class="hidden"><a id="resultDriveAnchor" href="#" target="_blank" rel="noopener">Buka Google Sheet di Drive</a></p>
+    </section>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
