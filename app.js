@@ -59,7 +59,11 @@ async function bootstrap() {
 
 async function loadDefaults() {
   const targetSheet = $('targetSheet').value;
-  if (!targetSheet) return;
+  if (!targetSheet) {
+    setStatus('Tiada tab dipilih', 'error');
+    alert('Tiada tab laporan tersedia. Semak sambungan Apps Script dan konfigurasi Vercel.');
+    return;
+  }
   try {
     setBusy(true, 'Muat data tab...');
     const data = await api('sheetDefaults', {targetSheet});

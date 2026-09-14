@@ -24,7 +24,7 @@ PWA untuk menjana laporan perjumpaan Kelab KKQ menggunakan Gemini dan menyimpan 
 ## 2. Vercel
 1. Upload/push folder ini ke GitHub.
 2. Import repo ke Vercel.
-3. URL Web App Apps Script `/exec` sudah dikodkan terus dalam `api/kkq.js` (`DEFAULT_APPS_SCRIPT_URL`). Jika Apps Script dideploy semula dan URL berubah, kemaskini pemalar tersebut — atau tetapkan Environment Variable `SMART_KKQ_APPS_SCRIPT_URL` di Vercel untuk override tanpa ubah kod.
+3. Tetapkan Environment Variable `SMART_KKQ_APPS_SCRIPT_URL` di Vercel kepada URL Web App Apps Script `/exec`.
 4. Deploy.
 
 ## Aliran pengguna
