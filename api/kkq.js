@@ -6,6 +6,21 @@ function json(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
+async function callAppsScript(endpoint, payload) {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload),
+    redirect: 'follow'
+  });
+  const text = await response.text();
+  try {
+    return {response, body: JSON.parse(text)};
+  } catch {
+    return {response, text};
+  }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.status(204).end();
@@ -31,25 +46,18 @@ module.exports = async function handler(req, res) {
       json(res, 500, {ok: false, error: 'SMART_KKQ_APPS_SCRIPT_URL mesti menggunakan HTTPS.'});
       return;
     }
-    const response = await fetch(DEFAULT_APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: typeof req.body === 'string' ? req.body : JSON.stringify(req.body || {}),
-      redirect: 'follow'
-    });
-    const text = await response.text();
-    let body;
+    const payload = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+    let result = await callAppsScript(DEFAULT_APPS_SCRIPT_URL, payload);
 
-    try {
-      body = JSON.parse(text);
-    } catch {
-      const preview = text.replace(/\s+/g, ' ').trim().slice(0, 240);
-      body = {
-        ok: false,
-        error: `Respons Apps Script bukan JSON yang sah (HTTP ${response.status}).${preview ? ` Kandungan: ${preview}` : ''}`
-      };
+    if (!result.body && DEFAULT_APPS_SCRIPT_URL !== VERIFIED_APPS_SCRIPT_URL) {
+      result = await callAppsScript(VERIFIED_APPS_SCRIPT_URL, payload);
     }
 
+    const response = result.response;
+    const body = result.body || {
+      ok: false,
+      error: `Respons Apps Script bukan JSON yang sah (HTTP ${response.status}). URL deployment mungkin memerlukan akses "Anyone".`
+    };
     if (!response.ok) {
       json(res, response.status, body);
       return;
