@@ -1,4 +1,4 @@
-const CACHE='smart-kkq-laporan-v2';
+const CACHE='smart-kkq-laporan-v3';
 const ASSETS=['/','/index.html','/styles.css','/app.js','/manifest.json',
   '/favicon.png','/apple-touch-icon.png',
   '/icons/icon-192.png','/icons/icon-512.png',

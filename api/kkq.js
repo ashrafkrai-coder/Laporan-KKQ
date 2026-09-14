@@ -1,4 +1,5 @@
-const DEFAULT_APPS_SCRIPT_URL = process.env.SMART_KKQ_APPS_SCRIPT_URL;
+const VERIFIED_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfaj-k6MD3CZwJnX2tfvAmtu_tU0jCgZKEhXCX9njC7K2XKniH6HhPtfWW96PdXaHE/exec';
+const DEFAULT_APPS_SCRIPT_URL = (process.env.SMART_KKQ_APPS_SCRIPT_URL || VERIFIED_APPS_SCRIPT_URL).trim();
 
 function json(res, status, body) {
   res.status(status).setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -25,10 +26,16 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    const endpoint = new URL(DEFAULT_APPS_SCRIPT_URL);
+    if (endpoint.protocol !== 'https:') {
+      json(res, 500, {ok: false, error: 'SMART_KKQ_APPS_SCRIPT_URL mesti menggunakan HTTPS.'});
+      return;
+    }
     const response = await fetch(DEFAULT_APPS_SCRIPT_URL, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: typeof req.body === 'string' ? req.body : JSON.stringify(req.body || {})
+      body: typeof req.body === 'string' ? req.body : JSON.stringify(req.body || {}),
+      redirect: 'follow'
     });
     const text = await response.text();
     let body;
@@ -36,7 +43,11 @@ module.exports = async function handler(req, res) {
     try {
       body = JSON.parse(text);
     } catch {
-      body = {ok: false, error: 'Respons Apps Script bukan JSON yang sah.'};
+      const preview = text.replace(/\s+/g, ' ').trim().slice(0, 240);
+      body = {
+        ok: false,
+        error: `Respons Apps Script bukan JSON yang sah (HTTP ${response.status}).${preview ? ` Kandungan: ${preview}` : ''}`
+      };
     }
 
     if (!response.ok) {

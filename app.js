@@ -2,7 +2,7 @@ const $ = (id) => document.getElementById(id);
 let report = null;
 let editMode = false;
 
-const fields = ['targetSheet','unit','sesi','meeting','date','place','time','studentAttendance','teacherAttendance','teacherOne','teacherTwo','title'];
+const fields = ['targetSheet','unit','sesi','meeting','day','date','place','time','studentAttendance','teacherAttendance','teacherOne','teacherTwo','title'];
 
 function setStatus(text, kind='') {
   const el = $('statusPill');
@@ -11,7 +11,7 @@ function setStatus(text, kind='') {
 }
 
 function setBusy(isBusy, text='Memproses...') {
-  ['generateBtn','regenerateBtn','saveBtn','loadDefaultsBtn'].forEach(id => { const el=$(id); if(el) el.disabled=isBusy; });
+  ['generateBtn','regenerateBtn','saveBtn'].forEach(id => { const el=$(id); if(el) el.disabled=isBusy; });
   setStatus(isBusy ? text : 'Sedia', isBusy ? 'busy' : '');
 }
 
@@ -31,7 +31,7 @@ function formData() {
 }
 
 function fillDefaults(d={}) {
-  ['unit','sesi','meeting','date','place','time','studentAttendance','teacherAttendance','teacherOne','teacherTwo'].forEach(k => {
+  ['unit','sesi','meeting','day','date','place','time','studentAttendance','teacherAttendance','teacherOne','teacherTwo'].forEach(k => {
     if (d[k] != null) $(k).value = d[k];
   });
 }
@@ -40,12 +40,18 @@ async function bootstrap() {
   try {
     setBusy(true, 'Menyambung...');
     const data = await api('bootstrap');
+    const sheets = Array.isArray(data.sheets)
+      ? data.sheets.filter(name => typeof name === 'string' && name.trim())
+      : [];
+    if (!sheets.length) {
+      throw new Error('Apps Script tidak memulangkan senarai tab. Semak tindakan bootstrap dan akses Web App.');
+    }
     const select = $('targetSheet');
     select.innerHTML = '';
-    (data.sheets || []).forEach(name => {
+    sheets.forEach(name => {
       const o = document.createElement('option'); o.value=name; o.textContent=name; select.appendChild(o);
     });
-    if (data.defaultSheet) select.value = data.defaultSheet;
+    if (data.defaultSheet && sheets.includes(data.defaultSheet)) select.value = data.defaultSheet;
     if (data.defaults) fillDefaults(data.defaults);
     setStatus('Bersambung', 'ok');
   } catch (err) {
@@ -53,7 +59,7 @@ async function bootstrap() {
     setStatus('Gagal sambung', 'error');
     alert(err.message);
   } finally {
-    ['generateBtn','regenerateBtn','saveBtn','loadDefaultsBtn'].forEach(id => { const el=$(id); if(el) el.disabled=false; });
+    ['generateBtn','regenerateBtn','saveBtn'].forEach(id => { const el=$(id); if(el) el.disabled=false; });
   }
 }
 
@@ -163,7 +169,6 @@ async function save() {
 $('generateBtn').addEventListener('click', generate);
 $('regenerateBtn').addEventListener('click', generate);
 $('saveBtn').addEventListener('click', save);
-$('loadDefaultsBtn').addEventListener('click', loadDefaults);
 $('editToggleBtn').addEventListener('click', toggleEdit);
 $('targetSheet').addEventListener('change', loadDefaults);
 

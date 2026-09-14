@@ -10,11 +10,11 @@ PWA untuk menjana laporan perjumpaan Kelab KKQ menggunakan Gemini dan menyimpan 
 
 ## 1. Apps Script
 1. Buka Apps Script yang terikat dengan Google Sheet laporan KKQ.
-2. Gantikan/tambah kod dengan `apps-script/Code.gs` dan `apps-script/appsscript.json`.
+2. Salin `apps-script/Code.gs` dan `apps-script/appsscript.json` ke projek Apps Script tersebut.
 3. Pastikan Script Properties:
    - `SMART_KKQ_GEMINI_API_KEY` = API key Gemini
    - `SMART_KKQ_GEMINI_MODEL` = model pilihan (opsyenal)
-4. Semak `SMART_KKQ.reportFolderId` dalam `Code.gs` — ID folder Google Drive destinasi salinan laporan (lalai ditetapkan kepada folder yang dikongsi).
+4. Jika perlu, tetapkan `SMART_KKQ_REPORT_FOLDER_ID` untuk folder Google Drive destinasi salinan laporan.
 5. Deploy > New deployment > Web app.
 6. Execute as: Me.
 7. Who has access: Anyone (atau polisi akaun yang sesuai).
@@ -24,7 +24,7 @@ PWA untuk menjana laporan perjumpaan Kelab KKQ menggunakan Gemini dan menyimpan 
 ## 2. Vercel
 1. Upload/push folder ini ke GitHub.
 2. Import repo ke Vercel.
-3. Tetapkan Environment Variable `SMART_KKQ_APPS_SCRIPT_URL` di Vercel kepada URL Web App Apps Script `/exec`.
+3. Tetapkan Environment Variable `SMART_KKQ_APPS_SCRIPT_URL` di Vercel kepada URL Web App Apps Script `/exec` (fallback URL yang telah disahkan turut tersedia dalam `api/kkq.js`).
 4. Deploy.
 
 ## Aliran pengguna

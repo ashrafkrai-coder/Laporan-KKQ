@@ -44,7 +44,30 @@
           </select>
         </label>
         <label>Perjumpaan
-          <input id="meeting" placeholder="Contoh: PERJUMPAAN 1" />
+          <select id="meeting">
+            <option value="">Pilih perjumpaan</option>
+            <option value="PERJUMPAAN 1">PERJUMPAAN 1</option>
+            <option value="PERJUMPAAN 2">PERJUMPAAN 2</option>
+            <option value="PERJUMPAAN 3">PERJUMPAAN 3</option>
+            <option value="PERJUMPAAN 4">PERJUMPAAN 4</option>
+            <option value="PERJUMPAAN 5">PERJUMPAAN 5</option>
+            <option value="PERJUMPAAN 6">PERJUMPAAN 6</option>
+            <option value="PERJUMPAAN 7">PERJUMPAAN 7</option>
+            <option value="PERJUMPAAN 8">PERJUMPAAN 8</option>
+            <option value="PERJUMPAAN 9">PERJUMPAAN 9</option>
+            <option value="PERJUMPAAN 10">PERJUMPAAN 10</option>
+            <option value="PERJUMPAAN 11">PERJUMPAAN 11</option>
+            <option value="PERJUMPAAN 12">PERJUMPAAN 12</option>
+          </select>
+        </label>
+        <label>Hari
+          <select id="day">
+            <option value="ISNIN">ISNIN</option>
+            <option value="SELASA">SELASA</option>
+            <option value="RABU" selected>RABU</option>
+            <option value="KHAMIS">KHAMIS</option>
+            <option value="JUMAAT">JUMAAT</option>
+          </select>
         </label>
         <label>Tarikh
           <input id="date" type="date" required />
@@ -72,7 +95,6 @@
         <textarea id="title" rows="3" placeholder="Contoh: Latihan Tajwid - Hukum Nun Sakinah dan Tanwin" required></textarea>
       </label>
       <div class="actions">
-        <button id="loadDefaultsBtn" class="btn ghost" type="button">Muat data tab</button>
         <button id="generateBtn" class="btn primary" type="button">Jana Laporan AI</button>
       </div>
     </section>
