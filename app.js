@@ -30,6 +30,28 @@ function formData() {
   return Object.fromEntries(fields.map(id => [id, $(id).value.trim()]));
 }
 
+function selectMeetingSheet() {
+  const meeting = $('meeting').value;
+  const match = meeting.match(/(\d+)$/);
+  if (!match) return;
+
+  const sheetName = `SESI ${match[1]}`;
+  const targetSheet = $('targetSheet');
+  const option = Array.from(targetSheet.options).find(
+    item => item.value.trim().toUpperCase() === sheetName
+  );
+  if (!option) {
+    setStatus(`Tab ${sheetName} tiada`, 'error');
+    alert(`Tab laporan "${sheetName}" tidak ditemui dalam Google Sheet.`);
+    return;
+  }
+
+  if (targetSheet.value !== option.value) {
+    targetSheet.value = option.value;
+    loadDefaults();
+  }
+}
+
 function fillDefaults(d={}) {
   ['unit','sesi','meeting','day','date','place','time','studentAttendance','teacherAttendance','teacherOne','teacherTwo'].forEach(k => {
     if (d[k] != null) $(k).value = d[k];
@@ -170,6 +192,7 @@ $('generateBtn').addEventListener('click', generate);
 $('regenerateBtn').addEventListener('click', generate);
 $('saveBtn').addEventListener('click', save);
 $('editToggleBtn').addEventListener('click', toggleEdit);
+$('meeting').addEventListener('change', selectMeetingSheet);
 $('targetSheet').addEventListener('change', loadDefaults);
 
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
